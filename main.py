@@ -13,7 +13,7 @@ tgtoken = ''
 imgbbkey = ''
 chatid = 
 ports = [80, 443]
-restrictedtitle = ['Invalid URL', 'Default Web Site Page', 'ERROR: The request could not be satisfied', '403 Forbidden']
+restrictedtitle = ['Invalid URL', 'Default Web Site Page', 'ERROR: The request could not be satisfied', '403 Forbidden', '404 Not Found', '410 Gone', '503 Service Temporarily Unavailable', '500 Internal Server Error']
 bot = Bot(token=tgtoken)
 session = requests.Session()
 
@@ -62,7 +62,7 @@ async def main():
                 image_url = response_dict['data']['url']
                 driver.quit()
                 message = f"Server: #{server_header}\nTitle: {title}\nGeo: {geo['country']}/{geo['city']}\n{'http' if 80 in open_ports else 'https'}://{ip_address}:{80 if 80 in open_ports else 443}/"
-                if title != [restrict for restrict in restrictedtitle]:
+                if title not in restrictedtitle:
                     await bot.send_photo(chat_id=chatid, photo=image_url, caption=message)
             except WebDriverException as e:
                 driver.quit()
